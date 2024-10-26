@@ -3,24 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Universal Time</title>
+  <title>Universal Flow Time (UFT)</title>
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      text-align: center; 
-      padding: 2rem; 
-      background-color: #f9f9f9;
-    }
-    .time-container { 
-      margin-top: 20px; 
-      font-size: 3rem; 
-      font-weight: bold; 
-    }
-    .explanation { 
-      margin-top: 20px; 
-      font-size: 1.2rem; 
-      color: #555; 
-    }
+    body { font-family: Arial, sans-serif; text-align: center; padding: 2rem; }
+    .time-container { margin-top: 20px; font-size: 2rem; }
+    .explanation { margin-top: 40px; font-size: 1.1rem; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto; }
   </style>
 </head>
 <body>
@@ -28,38 +15,42 @@
   <div class="time-container">
     <div id="uftTime">0.00</div>
   </div>
+
   <div class="explanation">
-    Total days since the epoch and the percentage of the current day based on your local time.
+    <h2>Understanding Universal Time</h2>
+    <p>The Universal Time is represented as <code>xxxxx.xx</code>, where:</p>
+    <ul>
+      <li><strong>xxxxx:</strong> Total flow units since the epoch (e.g., January 1, 2000).</li>
+      <li><strong>.xx:</strong> A percentage of the current day that has passed based on your local time.</li>
+    </ul>
+    <p>For example, <code>12345.67</code> indicates that 12,345 flow units have passed since the epoch, and you are 67% through your local day.</p>
   </div>
 
   <script>
     // Epoch start date
     const epochStart = new Date('2000-01-01T00:00:00Z');
-
+    
     function updateUFTTime() {
       const now = new Date();
-
+      
       // Calculate total milliseconds since epoch
       const millisecondsSinceEpoch = now - epochStart;
 
-      // Calculate total days since epoch
-      const daysSinceEpoch = Math.floor(millisecondsSinceEpoch / (1000 * 60 * 60 * 24)); // Convert to days
+      // Calculate Universal Time in flow units (10-second intervals)
+      const flowUnits = Math.floor(millisecondsSinceEpoch / 10000); // One flow unit every 10 seconds
+      const universalTime = (flowUnits / 100).toFixed(2); // Convert flow units to xxxxx.xx format
 
       // Calculate local day percentage
       const localMillisecondsInDay = now - new Date(now.toDateString());
       const millisecondsInDay = 24 * 60 * 60 * 1000;
       const localDayPercentage = ((localMillisecondsInDay / millisecondsInDay) * 100).toFixed(2);
 
-      // Ensure correct formatting as xxxxx.xx
-      const uftFormat = `${daysSinceEpoch}.${localDayPercentage.padStart(2, '0')}`;
+      // Display format: xxxxx.xx
+      const uftFormat = `${universalTime}`;
       document.getElementById('uftTime').textContent = uftFormat;
     }
-
-    // Run the function initially to set the time when the page loads
-    updateUFTTime();
-
-    // Update the time every second
-    setInterval(updateUFTTime, 1000);
+    
+    setInterval(updateUFTTime, 100);
   </script>
 </body>
 </html>
