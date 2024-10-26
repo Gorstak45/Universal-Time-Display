@@ -49,13 +49,10 @@
       const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const localMillisecondsInDay = now - startOfDay; // Milliseconds since the start of the current day
       const millisecondsInDay = 24 * 60 * 60 * 1000; // Total milliseconds in a day
-      const localDayPercentage = ((localMillisecondsInDay / millisecondsInDay) * 100); // Percentage of the day passed
+      const localDayPercentage = ((localMillisecondsInDay / millisecondsInDay) * 100).toFixed(2); // Percentage of the day passed, formatted to 2 decimal places
 
-      // Format the percentage to two decimal places
-      const formattedPercentage = localDayPercentage.toFixed(2);
-
-      // Combine days and percentage into the correct format: xxxxx.xx
-      const uftFormat = `${daysSinceEpoch}.${formattedPercentage}`;
+      // Format the output as xxxxx.xx
+      const uftFormat = `${daysSinceEpoch}.${localDayPercentage}`;
 
       // Update the displayed time
       document.getElementById('uftTime').textContent = uftFormat;
