@@ -50,16 +50,16 @@
       const millisecondsInDay = 24 * 60 * 60 * 1000;
       const localDayPercentage = ((localMillisecondsInDay / millisecondsInDay) * 100).toFixed(2);
 
-      // Ensure correct formatting as xxxxx.xx
-      const uftFormat = `${daysSinceEpoch}.${localDayPercentage.padStart(1, '0')}`;
+      // Display format: xxxxx.xx
+      const uftFormat = `${universalTime}`;
       document.getElementById('uftTime').textContent = uftFormat;
     }
-
+    
     // Run the function initially to set the time when the page loads
     updateUFTTime();
 
     // Update the time every second
-    setInterval(updateUFTTime, 100);
+    setInterval(updateUFTTime, 1000);
   </script>
 </body>
 </html>
