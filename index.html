@@ -3,31 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Universal Time</title>
+  <title>New Universal Time Format</title>
   <style>
     body { font-family: Arial, sans-serif; text-align: center; padding: 2rem; }
     .time-container { margin-top: 20px; font-size: 2rem; }
+    .explanation { margin-top: 40px; font-size: 1.1rem; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto; }
   </style>
 </head>
 <body>
-  <h1>Universal Time Display</h1>
+  <h1>Global Universal Date and Time</h1>
   <div class="time-container">
-    <div id="uftTime">0</div>
+    Universal Format: <span id="universalTime"></span>
   </div>
+
+  <div class="explanation">
+    <h2>Understanding the Universal Format</h2>
+    <p>This new universal time and date format is designed to be globally applicable, removing the need for time zones and seasonal adjustments. It consists of three parts:</p>
+    <ul>
+      <li><strong>Year:</strong> The number of years since January 1, 2000. For example, <code>24</code> represents the year 2024.</li>
+      <li><strong>Day:</strong> The total number of days passed since January 1, 2000. For instance, <code>5023</code> indicates the 5,023rd day since this starting date.</li>
+      <li><strong>Decimal Time:</strong> A decimal fraction of the current day, where <code>0.00</code> represents midnight UTC, <code>0.50</code> represents noon UTC, and <code>0.99</code> approaches midnight UTC again.</li>
+    </ul>
+    <p>So, a universal time of <code>24.5023.83</code> would mean it is the year 2024, the 5,023rd day since January 1, 2000, and 83% through the current day (around 19:55 UTC).</p>
+  </div>
+
   <script>
-    const epochStart = new Date('2000-01-01T00:00:00Z');
-    function updateUFTTime() {
+    setInterval(updateUniversalTime, 1000);
+
+    function updateUniversalTime() {
+      const baseDate = new Date('2000-01-01T00:00:00Z');  // Epoch start: January 1, 2000
       const now = new Date();
-      const millisecondsSinceEpoch = now - epochStart;
-      const daysSinceEpoch = Math.floor(millisecondsSinceEpoch / (1000 * 60 * 60 * 24)); // Convert to days
-      const localMillisecondsInDay = now - new Date(now.toDateString());
+      const diffInMilliseconds = now - baseDate;
+      
+      // Calculate years since 2000
+      const year = now.getUTCFullYear() - 2000;
+
+      // Calculate days since January 1, 2000
+      const daysSince2000 = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+
+      // Calculate decimal time
       const millisecondsInDay = 24 * 60 * 60 * 1000;
-      const localDayPercentage = ((localMillisecondsInDay / millisecondsInDay) * 100).toFixed(2);
-      const uftFormat = `${daysSinceEpoch}.${localDayPercentage}`;
-      document.getElementById('uftTime').textContent = uftFormat;
+      const timeTodayMilliseconds = now - new Date(now.toISOString().split("T")[0] + "T00:00:00Z");
+      const decimalTime = (timeTodayMilliseconds / millisecondsInDay).toFixed(2);
+
+      // Combine into universal format
+      const universalFormat = `${year}.${daysSince2000}${decimalTime}`;
+      document.getElementById('universalTime').textContent = universalFormat;
     }
-    updateUFTTime();
-    setInterval(updateUFTTime, 1000);
   </script>
 </body>
 </html>
