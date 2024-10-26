@@ -52,7 +52,7 @@
       const localDayPercentage = ((localMillisecondsInDay / millisecondsInDay) * 100).toFixed(2); // Percentage of the day passed
 
       // Format the output as xxxxx.xx
-      const uftFormat = `${daysSinceEpoch}.${localDayPercentage}`;
+      const uftFormat = `${daysSinceEpoch.toFixed(0)}.${localDayPercentage}`;
 
       // Update the displayed time
       document.getElementById('uftTime').textContent = uftFormat;
