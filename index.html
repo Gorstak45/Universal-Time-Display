@@ -3,16 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Universal Time</title>
+  <title>Universal Time Display</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 2rem; }
-    .time-container { margin-top: 20px; font-size: 2rem; }
+    body { 
+      font-family: Arial, sans-serif; 
+      text-align: center; 
+      padding: 2rem; 
+      background-color: #f9f9f9;
+    }
+    .time-container { 
+      margin-top: 20px; 
+      font-size: 3rem; 
+      font-weight: bold; 
+    }
+    .explanation { 
+      margin-top: 20px; 
+      font-size: 1.2rem; 
+      color: #555; 
+    }
   </style>
 </head>
 <body>
   <h1>Universal Time</h1>
   <div class="time-container">
-    <div id="uftTime">Days: 0,0.00</div>
+    <div id="uftTime">0</div>
+  </div>
+  <div class="explanation">
+    Total days since the epoch and the percentage of the current day based on your local time.
   </div>
 
   <script>
@@ -29,12 +46,15 @@
       const daysSinceEpoch = Math.floor(millisecondsSinceEpoch / (1000 * 60 * 60 * 24)); // Convert to days
 
       // Calculate local day percentage
-      const localMillisecondsInDay = now - new Date(now.toDateString());
-      const millisecondsInDay = 24 * 60 * 60 * 1000;
-      const localDayPercentage = ((localMillisecondsInDay / millisecondsInDay) * 100).toFixed(2);
+      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const localMillisecondsInDay = now - startOfDay; // Milliseconds since the start of the current day
+      const millisecondsInDay = 24 * 60 * 60 * 1000; // Total milliseconds in a day
+      const localDayPercentage = ((localMillisecondsInDay / millisecondsInDay) * 100).toFixed(2); // Percentage of the day passed, formatted to 2 decimal places
 
-      // Display format: Days: xxxxx, % of Day: xx
-      const uftFormat = `Days: ${daysSinceEpoch}.${localDayPercentage}`;
+      // Format the output as xxxxx.xx
+      const uftFormat = `${daysSinceEpoch}.${localDayPercentage}`;
+
+      // Update the displayed time
       document.getElementById('uftTime').textContent = uftFormat;
     }
 
