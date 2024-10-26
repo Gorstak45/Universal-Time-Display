@@ -3,42 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Universal Time Display</title>
+  <title>New Universal Time Format</title>
   <style>
     body { font-family: Arial, sans-serif; text-align: center; padding: 2rem; }
-    .time-container { margin-top: 20px; }
-    .time-format { font-size: 1.5rem; }
+    .time-container { margin-top: 20px; font-size: 2rem; }
+    .explanation { margin-top: 40px; font-size: 1.1rem; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto; }
   </style>
 </head>
 <body>
-  <h1>Universal Time Display</h1>
+  <h1>Global Universal Date and Time</h1>
   <div class="time-container">
-    <div class="time-format">UTC Time: <span id="utcTime"></span></div>
-    <div class="time-format">Earth Stardate: <span id="stardate"></span></div>
-    <div class="time-format">Decimal Time: <span id="decimalTime"></span></div>
+    Universal Format: <span id="universalTime"></span>
+  </div>
+
+  <div class="explanation">
+    <h2>Understanding the Universal Format</h2>
+    <p>This new universal time and date format is designed to be globally applicable, removing the need for time zones and seasonal adjustments. It consists of three parts:</p>
+    <ul>
+      <li><strong>Year:</strong> The number of years since January 1, 2000. For example, <code>24</code> represents the year 2024.</li>
+      <li><strong>Day:</strong> The total number of days passed since January 1, 2000. For instance, <code>5023</code> indicates the 5,023rd day since this starting date.</li>
+      <li><strong>Decimal Time:</strong> A decimal fraction of the current day, where <code>0.00</code> represents midnight UTC, <code>0.50</code> represents noon UTC, and <code>0.99</code> approaches midnight UTC again.</li>
+    </ul>
+    <p>So, a universal time of <code>24.5023.83</code> would mean it is the year 2024, the 5,023rd day since January 1, 2000, and 83% through the current day (around 19:55 UTC).</p>
   </div>
 
   <script>
-    // Update the time every second
-    setInterval(updateTime, 1000);
+    setInterval(updateUniversalTime, 1000);
 
-    function updateTime() {
+    function updateUniversalTime() {
+      const baseDate = new Date('2000-01-01T00:00:00Z');  // Epoch start: January 1, 2000
       const now = new Date();
+      const diffInMilliseconds = now - baseDate;
+      
+      // Calculate years since 2000
+      const year = now.getUTCFullYear() - 2000;
 
-      // UTC Time
-      document.getElementById('utcTime').textContent = now.toISOString().replace('T', ' ').split('.')[0];
+      // Calculate days since January 1, 2000
+      const daysSince2000 = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
 
-      // Earth Stardate (YYYY.DayOfYear.DecimalPart)
-      const startOfYear = new Date(now.getFullYear(), 0, 0);
-      const dayOfYear = Math.floor((now - startOfYear) / 86400000); // Days since Jan 1
-      const secondsInDay = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
-      const stardate = `${now.getFullYear()}.${dayOfYear}.${(secondsInDay / 86400).toFixed(3)}`;
-      document.getElementById('stardate').textContent = stardate;
+      // Calculate decimal time
+      const millisecondsInDay = 24 * 60 * 60 * 1000;
+      const timeTodayMilliseconds = now - new Date(now.toISOString().split("T")[0] + "T00:00:00Z");
+      const decimalTime = (timeTodayMilliseconds / millisecondsInDay).toFixed(2);
 
-      // Decimal Time
-      const decimalHour = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
-      const decimalTime = ((decimalHour / 24) * 10).toFixed(2);
-      document.getElementById('decimalTime').textContent = decimalTime;
+      // Combine into universal format
+      const universalFormat = `${year}.${daysSince2000}${decimalTime}`;
+      document.getElementById('universalTime').textContent = universalFormat;
     }
   </script>
 </body>
