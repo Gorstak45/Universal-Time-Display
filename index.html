@@ -5,9 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Universal Time Format</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 2rem; }
-    .time-container { margin-top: 20px; font-size: 2rem; }
-    .explanation { margin-top: 40px; font-size: 1.1rem; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto; }
+    body { 
+      font-family: Arial, sans-serif; 
+      text-align: center; 
+      padding: 2rem; 
+    }
+    .time-container { 
+      margin-top: 20px; 
+      font-size: 2rem; 
+    }
+    .explanation { 
+      margin-top: 40px; 
+      font-size: 1.1rem; 
+      line-height: 1.6; 
+      max-width: 600px; 
+      margin-left: auto; 
+      margin-right: auto; 
+    }
   </style>
 </head>
 <body>
@@ -22,9 +36,9 @@
     <ul>
       <li><strong>Year:</strong> The number of years since January 1, 2000. For example, <code>24</code> represents the year 2024.</li>
       <li><strong>Day:</strong> The total number of days passed since January 1, 2000. For instance, <code>5023</code> indicates the 5,023rd day since this starting date.</li>
-      <li><strong>Decimal Time:</strong> A decimal fraction of the current day, where <code>0.00</code> represents midnight UTC, <code>0.50</code> represents noon UTC, and <code>0.99</code> approaches midnight UTC again.</li>
+      <li><strong>Decimal Time:</strong> A decimal fraction of the current local day, where <code>0.00</code> represents midnight local time, <code>0.50</code> represents noon local time, and <code>0.99</code> approaches midnight local time again.</li>
     </ul>
-    <p>So, a universal time of <code>24.5023.83</code> would mean it is the year 2024, the 5,023rd day since January 1, 2000, and 83% through the current day (around 19:55 UTC).</p>
+    <p>So, a universal time of <code>24.5023.83</code> would mean it is the year 2024, the 5,023rd day since January 1, 2000, and 83% through the current local day (around 19:55 local time).</p>
   </div>
 
   <script>
@@ -36,19 +50,20 @@
       const diffInMilliseconds = now - baseDate;
       
       // Calculate years since 2000
-      const year = now.getUTCFullYear() - 2000;
+      const year = now.getFullYear() - 2000;
 
       // Calculate days since January 1, 2000
       const daysSince2000 = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
 
-      // Calculate decimal time
-      const millisecondsInDay = 24 * 60 * 60 * 1000;
-      const timeTodayMilliseconds = now - new Date(now.toISOString().split("T")[0] + "T00:00:00Z");
-      const decimalTime = (timeTodayMilliseconds / millisecondsInDay).toFixed(2);
+      // Calculate local decimal time
+      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const localMillisecondsInDay = now - startOfDay; // Milliseconds since the start of the current local day
+      const millisecondsInDay = 24 * 60 * 60 * 1000; // Total milliseconds in a day
+      const localDecimalTime = (localMillisecondsInDay / millisecondsInDay).toFixed(2); // Local percentage of the day
 
       // Combine into universal format
-      const universalFormat = `${year}.${daysSince2000}${decimalTime}`;
-      document.getElementById('universalTime').textContent = universalFormat;
+      const universalFormat = `${year}.${daysSince2000}.${localDecimalTime}`; // Corrected format
+      document.getElementById('universalTime').textContent = universalFormat; // Update display
     }
   </script>
 </body>
