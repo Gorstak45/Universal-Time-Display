@@ -42,14 +42,14 @@
       // Calculate total milliseconds since epoch
       const millisecondsSinceEpoch = now - epochStart;
 
-      // Calculate total days since epoch
+      // Calculate total days since epoch (integer)
       const daysSinceEpoch = Math.floor(millisecondsSinceEpoch / (1000 * 60 * 60 * 24)); // Convert to days
 
       // Calculate local day percentage
       const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const localMillisecondsInDay = now - startOfDay; // Milliseconds since the start of the current day
       const millisecondsInDay = 24 * 60 * 60 * 1000; // Total milliseconds in a day
-      const localDayPercentage = ((localMillisecondsInDay / millisecondsInDay) * 100).toFixed(2); // Percentage of the day passed, formatted to 2 decimal places
+      const localDayPercentage = ((localMillisecondsInDay / millisecondsInDay) * 100).toFixed(2); // Percentage of the day passed
 
       // Format the output as xxxxx.xx
       const uftFormat = `${daysSinceEpoch}.${localDayPercentage}`;
