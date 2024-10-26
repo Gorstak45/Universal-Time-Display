@@ -14,34 +14,19 @@
   <div class="time-container">
     <div id="uftTime">0</div>
   </div>
-
   <script>
-    // Epoch start date
     const epochStart = new Date('2000-01-01T00:00:00Z');
-
     function updateUFTTime() {
       const now = new Date();
-
-      // Calculate total milliseconds since epoch
       const millisecondsSinceEpoch = now - epochStart;
-
-      // Calculate total days since epoch
       const daysSinceEpoch = Math.floor(millisecondsSinceEpoch / (1000 * 60 * 60 * 24)); // Convert to days
-
-      // Calculate local day percentage
       const localMillisecondsInDay = now - new Date(now.toDateString());
       const millisecondsInDay = 24 * 60 * 60 * 1000;
       const localDayPercentage = ((localMillisecondsInDay / millisecondsInDay) * 100).toFixed(2);
-
-      // Display format: Days: xxxxx, % of Day: xx
       const uftFormat = `${daysSinceEpoch}.${localDayPercentage}`;
       document.getElementById('uftTime').textContent = uftFormat;
     }
-
-    // Run the function initially to set the time when the page loads
     updateUFTTime();
-
-    // Update the time every second
     setInterval(updateUFTTime, 1000);
   </script>
 </body>
