@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universal Time Display</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 2rem; }
+    .time-container { margin-top: 20px; }
+    .time-format { font-size: 1.5rem; }
+  </style>
+</head>
+<body>
+  <h1>Universal Time Display</h1>
+  <div class="time-container">
+    <div class="time-format">UTC Time: <span id="utcTime"></span></div>
+    <div class="time-format">Earth Stardate: <span id="stardate"></span></div>
+    <div class="time-format">Decimal Time: <span id="decimalTime"></span></div>
+  </div>
+
+  <script>
+    // Update the time every second
+    setInterval(updateTime, 1000);
+
+    function updateTime() {
+      const now = new Date();
+
+      // UTC Time
+      document.getElementById('utcTime').textContent = now.toISOString().replace('T', ' ').split('.')[0];
+
+      // Earth Stardate (YYYY.DayOfYear.DecimalPart)
+      const startOfYear = new Date(now.getFullYear(), 0, 0);
+      const dayOfYear = Math.floor((now - startOfYear) / 86400000); // Days since Jan 1
+      const secondsInDay = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
+      const stardate = `${now.getFullYear()}.${dayOfYear}.${(secondsInDay / 86400).toFixed(3)}`;
+      document.getElementById('stardate').textContent = stardate;
+
+      // Decimal Time
+      const decimalHour = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
+      const decimalTime = ((decimalHour / 24) * 10).toFixed(2);
+      document.getElementById('decimalTime').textContent = decimalTime;
+    }
+  </script>
+</body>
+</html>
