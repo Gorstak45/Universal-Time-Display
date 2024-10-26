@@ -51,7 +51,7 @@
       const localDayPercentage = ((localMillisecondsInDay / millisecondsInDay) * 100).toFixed(2);
 
       // Ensure correct formatting as xxxxx.xx
-      const uftFormat = `${daysSinceEpoch}.${localDayPercentage.padStart(2, '0')}`;
+      const uftFormat = `${daysSinceEpoch}.${localDayPercentage.padStart(1, '0')}`;
       document.getElementById('uftTime').textContent = uftFormat;
     }
 
