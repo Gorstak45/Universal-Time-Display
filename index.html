@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Universal Flow Time (UFT) Display</title>
+  <title>Universal Flow Time (UFT) - Simplified</title>
   <style>
     body { font-family: Arial, sans-serif; text-align: center; padding: 2rem; }
     .time-container { margin-top: 20px; font-size: 2rem; }
@@ -18,12 +18,12 @@
 
   <div class="explanation">
     <h2>Understanding Universal Flow Time</h2>
-    <p>The Universal Flow Time (UFT) represents a seamless, continuous timeline without days or hours. Each person sees a global "Flow Unit" and a local time percentage.</p>
+    <p>The Universal Flow Time (UFT) is a streamlined, global time display.</p>
     <ul>
-      <li><strong>Flow Units:</strong> Total units of time since the epoch (e.g., January 1, 2000), incrementing continuously.</li>
-      <li><strong>Local Day Percentage:</strong> Represents how far into the day you are, from <code>0.00</code> (local midnight) to <code>0.99</code> (end of the day).</li>
+      <li><strong>Flow Units:</strong> Represents a continuously increasing count of time units since the Epoch (e.g., January 1, 2000).</li>
+      <li><strong>Local Day Percentage:</strong> A percentage value <code>.xx</code> showing how far through the local day you are, where <code>.00</code> is local midnight and <code>.99</code> is the end of the day.</li>
     </ul>
-    <p>For example, <code>12345678.57</code> means 12,345,678 flow units have passed since Epoch, and you are 57% through your local day.</p>
+    <p>For example, <code>12345.57</code> means 12,345 flow units have passed since Epoch, and you are 57% through your local day.</p>
   </div>
 
   <script>
@@ -35,14 +35,14 @@
       
       // Calculate flow units since epoch start
       const millisecondsSinceEpoch = now - epochStart;
-      const flowUnits = Math.floor(millisecondsSinceEpoch / 10000);  // One flow unit every 10,000 ms (10 seconds)
+      const flowUnits = Math.floor(millisecondsSinceEpoch / 10000);  // 1 flow unit every 10 seconds
 
-      // Calculate local day percentage (based on local time)
+      // Calculate local day percentage (two decimal places)
       const localMillisecondsInDay = now - new Date(now.toDateString());
       const millisecondsInDay = 24 * 60 * 60 * 1000;
       const localDayPercentage = ((localMillisecondsInDay / millisecondsInDay) * 100).toFixed(2);
 
-      // Display Universal Flow Time format
+      // Display format: xxxxx.xx
       const uftFormat = `${flowUnits}.${localDayPercentage}`;
       document.getElementById('uftTime').textContent = uftFormat;
     }
