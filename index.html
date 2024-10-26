@@ -43,7 +43,7 @@
       const millisecondsSinceEpoch = now - epochStart;
 
       // Calculate total days since epoch (integer)
-      const daysSinceEpoch = Math.floor((millisecondsSinceEpoch / (1000 * 60 * 60 * 24).toFixed(2)); // Convert to days
+      const daysSinceEpoch = Math.floor((millisecondsSinceEpoch / (1000 * 60 * 60 * 24).toFixed(0)); // Convert to days
 
       // Calculate local day percentage
       const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
